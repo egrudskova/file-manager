@@ -17,7 +17,7 @@ export const readUserName = () => {
     if (usernameArgs?.startsWith('--username') && usernameArgs?.includes('=')) {
       username = usernameArgs.split('=')[1];
     } else {
-      throw new Error('Incorrect username input');
+      throw new Error('Invalid input');
     }
     return username;
   } catch (err) {
@@ -61,7 +61,7 @@ const executeCommand = ({name, args}) => {
     case CLI_COMMANDS.exit:
       break;
     default:
-      console.log('Unknown command')
+      console.log('Invalid input');
   }
 }
 
