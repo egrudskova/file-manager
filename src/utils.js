@@ -40,7 +40,7 @@ const parseCommand = (line) => {
 
 const isCommandIn = (obj, command) => Object.values(obj).includes(command);
 
-const executeCommand = ({name, args}) => {
+const executeCommand = async ({name, args}) => {
   if (isCommandIn(FS_COMMANDS, name)) {
     fsCommandsHandler(name, ...args);
     return;
@@ -48,7 +48,7 @@ const executeCommand = ({name, args}) => {
     nwdCommandsHandler(name, ...args);
     return;
   } else if (isCommandIn(ZIP_COMMANDS, name)) {
-    zipCommandsHandler(name, ...args);
+    await zipCommandsHandler(name, ...args);
     return;
   }
   switch (name) {
@@ -65,9 +65,9 @@ const executeCommand = ({name, args}) => {
   }
 }
 
-export const processCommand = (line) => {
+export const processCommand = async (line) => {
   try {
-    executeCommand(parseCommand(line));
+    await executeCommand(parseCommand(line));
   } catch (err) {
     console.log(err.message)
   }

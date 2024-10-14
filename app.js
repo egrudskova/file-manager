@@ -12,8 +12,8 @@ const initApp = () => {
     output: process.stdout,
   });
 
-  rl.on('line', (line) => {
-      processCommand(line);
+  rl.on('line', async (line) => {
+    await processCommand(line);
     //printCurrentWorkingDirectory();
   });
 

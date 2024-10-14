@@ -7,10 +7,9 @@ const printUsername = () => { console.log(`Username: ${userInfo().username}`) };
 const printArch = () => { console.log(`Username: ${arch()}`) };
 
 const printCPUsInfo = () => {
-  const cpusInfo = cpus().map(({ model, speed}, index) => `${index + 1}. ${ model } ${ speed }`);
+  const cpusInfo = cpus().map(({ model, speed}, index) => `${index + 1}. ${ model } ${ speed } GHz`);
   console.log(`CPUs number: ${cpus().length}`);
   console.log(`CPUs data:\n${cpusInfo.join('\n')}`);
-
 }
 
 export const osCommandsHandler = (...args) => {
