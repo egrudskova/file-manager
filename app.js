@@ -12,8 +12,10 @@ const initApp = () => {
     output: process.stdout,
   });
 
+  const closeApp = () => { rl.close() };
+
   rl.on('line', async (line) => {
-    await processCommand(line);
+    await processCommand(line, closeApp);
     //printCurrentWorkingDirectory();
   });
 

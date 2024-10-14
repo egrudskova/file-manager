@@ -25,11 +25,14 @@ export const readUserName = () => {
   }
 }
 
+const isCommandIn = (obj, command) => Object.values(obj).includes(command);
+
 const parseCommand = (line) => {
   const command = {};
-  const name = CLI_COMMANDS[line.split(' ')[0]];
+  const processedLine = line.trim().split(' ');
+  const name = isCommandIn(CLI_COMMANDS, processedLine[0]) ? processedLine[0] : null;
   command['args'] = [];
-  line.split(' ').slice(1).forEach((arg) => {
+  processedLine.slice(1).forEach((arg) => {
     command['args'].push(arg);
   })
   if (!name) {
@@ -38,9 +41,7 @@ const parseCommand = (line) => {
   return { name, ...command };
 }
 
-const isCommandIn = (obj, command) => Object.values(obj).includes(command);
-
-const executeCommand = async ({name, args}) => {
+const executeCommand = async ({name, args}, closeApp) => {
   if (isCommandIn(FS_COMMANDS, name)) {
     fsCommandsHandler(name, ...args);
     return;
@@ -59,15 +60,16 @@ const executeCommand = async ({name, args}) => {
       hashCommandsHandler(...args);
       break;
     case CLI_COMMANDS.exit:
+      closeApp();
       break;
     default:
       console.log('Invalid input');
   }
 }
 
-export const processCommand = async (line) => {
+export const processCommand = async (line, closeApp) => {
   try {
-    await executeCommand(parseCommand(line));
+    await executeCommand(parseCommand(line), closeApp);
   } catch (err) {
     console.log(err.message)
   }
