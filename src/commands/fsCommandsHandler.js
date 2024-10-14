@@ -1,2 +1,3 @@
-export const fsCommandsHandler = (name, ...args) => {
+export const fsCommandsHandler = async (name, ...args) => {
+  console.log('NOT IMPLEMENTED')
 }

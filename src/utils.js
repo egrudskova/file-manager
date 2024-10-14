@@ -1,4 +1,3 @@
-import process from "node:process";
 import {CLI_COMMANDS, FS_COMMANDS, NWD_COMMANDS, OS_COMMANDS, ZIP_COMMANDS} from "./commands/commands.js";
 import {fsCommandsHandler} from "./commands/fsCommandsHandler.js";
 import {nwdCommandsHandler} from "./commands/nwdCommandsHandler.js";
@@ -6,8 +5,8 @@ import {osCommandsHandler} from "./commands/osCommandsHandler.js";
 import {zipCommandsHandler} from "./commands/zipCommandsHandler.js";
 import {hashCommandsHandler} from "./commands/hashCommandsHandler.js";
 
-export const printCurrentWorkingDirectory = () => {
-  console.log(`You are currently in ${process.cwd()}`);
+export const printCurrentWorkingDirectory = (dir) => {
+  console.log(`You are currently in ${dir}`);
 };
 
 export const readUserName = () => {
@@ -41,9 +40,9 @@ const parseCommand = (line) => {
   return { name, ...command };
 }
 
-const executeCommand = async ({name, args}, closeApp) => {
+const executeCommand = async ({name, args}, { closeApp }) => {
   if (isCommandIn(FS_COMMANDS, name)) {
-    fsCommandsHandler(name, ...args);
+    await fsCommandsHandler(name, ...args);
     return;
   } else if (isCommandIn(NWD_COMMANDS, name)) {
     nwdCommandsHandler(name, ...args);
@@ -67,9 +66,9 @@ const executeCommand = async ({name, args}, closeApp) => {
   }
 }
 
-export const processCommand = async (line, closeApp) => {
+export const processCommand = async (line, options) => {
   try {
-    await executeCommand(parseCommand(line), closeApp);
+    await executeCommand(parseCommand(line), options);
   } catch (err) {
     console.log(err.message)
   }
